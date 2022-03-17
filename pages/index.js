@@ -52,7 +52,7 @@ function Home({ data }) {
   }
 
   const clickOnDelete = (id) => {
-    fetch('https://new-stu.vercel.app/api/hello', {
+    fetch('http://localhost:3000/api/hello', {
       method: "DELETE",
       headers: {
         "content-type": 'application/json'
@@ -123,7 +123,7 @@ const TableItem = ({ data, clickOnDelete }) => {
 export async function getStaticProps() {
 
 
-  const res = await fetch('https://new-stu.vercel.app/api/hello')
+  const res = await fetch('http://localhost:3000/api/hello')
   const data = await res.json()
   return { props: { data } }
 }
