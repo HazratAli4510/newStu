@@ -50,6 +50,23 @@ function Home({ data }) {
       })
 
   }
+
+  const clickOnDelete = (id) => {
+    fetch('https://new-stu.vercel.app/api/hello', {
+      method: "DELETE",
+      headers: {
+        "content-type": 'application/json'
+      },
+      body: JSON.stringify({ id: id })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          refreshData()
+        }
+      })
+
+  }
   return (
     <>
       <Head>
@@ -75,11 +92,12 @@ function Home({ data }) {
                 <td>Name</td>
                 <td>Address</td>
                 <td>Class Roll</td>
+                <td>Action</td>
               </tr>
             </thead>
             <tbody>
               {
-                result.map(res => <TableItem key={res._id} data={res} />)
+                result.map(res => <TableItem key={res._id} data={res} clickOnDelete={clickOnDelete} />)
               }
             </tbody>
           </table>
@@ -89,13 +107,14 @@ function Home({ data }) {
   )
 }
 
-const TableItem = ({ data }) => {
+const TableItem = ({ data, clickOnDelete }) => {
   return (
     <tr>
       <td>{data.sr}</td>
       <td>{data.name}</td>
       <td>{data.address}</td>
       <td>{data.classRoll}</td>
+      <td><button onClick={() => clickOnDelete(data._id)} className='btn btn-danger'>Delete</button></td>
     </tr>
   )
 }
