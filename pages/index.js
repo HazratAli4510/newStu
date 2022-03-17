@@ -120,7 +120,7 @@ const TableItem = ({ data, clickOnDelete }) => {
 }
 
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
 
 
   const res = await fetch('https://new-stu.vercel.app/api/hello')
