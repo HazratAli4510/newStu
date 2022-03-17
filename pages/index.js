@@ -120,7 +120,7 @@ const TableItem = ({ data, clickOnDelete }) => {
 }
 
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
 
 
   const res = await fetch('http://localhost:3000/api/hello')
