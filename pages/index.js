@@ -34,7 +34,7 @@ function Home({ data }) {
       classRoll: roll
     }
 
-    fetch('http://localhost:3000/api/hello', {
+    fetch('https://new-stu.vercel.app/api/hello', {
       method: "POST",
       headers: {
         'content-type': 'application/json'
