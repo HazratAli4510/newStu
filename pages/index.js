@@ -1,18 +1,32 @@
-import absoluteUrl from 'next-absolute-url';
 import Head from 'next/head'
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import getList from '../lib/getlist';
 
-function Home({ data }) {
+function Home() {
+
+
+  const [ex, setEx] = useState([])
+  const [change, setChange] = useState(1)
+
+  useEffect(() => {
+    fetch('/api/hello')
+      .then(res => res.json())
+      .then(data => setEx(data.result))
+  }, [change])
+
+
+
+  console.log(ex)
+
+
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
   const [roll, setRoll] = useState('')
 
   let counter = 0;
 
-  const { result } = data
-
-  result.forEach(res => {
+  ex.forEach(res => {
     counter = counter + 1
     res['sr'] = counter
   })
@@ -34,7 +48,7 @@ function Home({ data }) {
       classRoll: roll
     }
 
-    fetch('https://new-stu.vercel.app/api/hello', {
+    fetch('/api/hello', {
       method: "POST",
       headers: {
         'content-type': 'application/json'
@@ -45,6 +59,7 @@ function Home({ data }) {
       .then(data => {
         if (data.success) {
           refreshData()
+          setChange(change === 1 ? 2 : 1)
           e.target.reset()
         }
       })
@@ -52,7 +67,7 @@ function Home({ data }) {
   }
 
   const clickOnDelete = (id) => {
-    fetch('https://new-stu.vercel.app/api/hello', {
+    fetch('/api/hello', {
       method: "DELETE",
       headers: {
         "content-type": 'application/json'
@@ -63,6 +78,7 @@ function Home({ data }) {
       .then(data => {
         if (data.success) {
           refreshData()
+          setChange(change === 1 ? 2 : 1)
         }
       })
 
@@ -97,7 +113,7 @@ function Home({ data }) {
             </thead>
             <tbody>
               {
-                result.map(res => <TableItem key={res._id} data={res} clickOnDelete={clickOnDelete} />)
+                ex.map(res => <TableItem key={res._id} data={res} clickOnDelete={clickOnDelete} />)
               }
             </tbody>
           </table>
@@ -120,12 +136,10 @@ const TableItem = ({ data, clickOnDelete }) => {
 }
 
 
-export async function getServerSideProps() {
+/* export async function getStaticProps() {
 
-
-  const res = await fetch('https://new-stu.vercel.app/api/hello')
-  const data = await res.json()
-  return { props: { data } }
-}
+  const data = await getList()
+  return { props: { data } } 
+} */
 
 export default Home;
