@@ -139,7 +139,12 @@ const TableItem = ({ data, clickOnDelete }) => {
 export async function getStaticProps() {
   const res = await fetch('https://new-stu.vercel.app/api/hello')
   const data = await res.json()
-  return { props: { data } }
+  return {
+    props: {
+      data
+    },
+    revalidate: 10
+  }
 }
 
 export default Home;
