@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import getList from '../lib/getlist';
 
-function Home() {
+function Home({ data }) {
 
 
   const [ex, setEx] = useState([])
@@ -17,7 +17,7 @@ function Home() {
 
 
 
-  console.log(ex)
+  const { result } = data;
 
 
   const [name, setName] = useState('')
@@ -26,7 +26,7 @@ function Home() {
 
   let counter = 0;
 
-  ex.forEach(res => {
+  result.forEach(res => {
     counter = counter + 1
     res['sr'] = counter
   })
@@ -113,7 +113,7 @@ function Home() {
             </thead>
             <tbody>
               {
-                ex.map(res => <TableItem key={res._id} data={res} clickOnDelete={clickOnDelete} />)
+                result.map(res => <TableItem key={res._id} data={res} clickOnDelete={clickOnDelete} />)
               }
             </tbody>
           </table>
@@ -136,10 +136,10 @@ const TableItem = ({ data, clickOnDelete }) => {
 }
 
 
-/* export async function getStaticProps() {
-
-  const data = await getList()
-  return { props: { data } } 
-} */
+export async function getStaticProps() {
+  const res = await fetch('https://new-stu.vercel.app/api/hello')
+  const data = await res.json()
+  return { props: { data } }
+}
 
 export default Home;
